@@ -9,7 +9,7 @@ function randomTime(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-const pauseTime = randomTime(1000, 5000);
+const pauseTime = randomTime(1500, 3000);
 
 async function scrollAndClickLoadMore(page) {
     let loadMoreVisible = await page.evaluate(() => {
@@ -29,6 +29,7 @@ async function scrollAndClickLoadMore(page) {
             () => !document.querySelector('button.comments-comments-list__load-more-comments-button'),
             { timeout: 10000 }
         ).catch(e => console.log("Timeout esperando o botão 'Carregar mais comentários' desaparecer"));
+        await pause(pauseTime);
         await scrollAndClickLoadMore(page);
     }
 }
@@ -97,6 +98,8 @@ async function scrollAndClickLoadMore(page) {
 
     try {
         await page.waitForSelector('div.comments-comments-list    ', { visible: true });
+
+        await pause(pauseTime);
 
         await scrollAndClickLoadMore(page);
 
